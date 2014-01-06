@@ -1,0 +1,1 @@
+This application was built to support an in-house art project that would allow a user with a mobile web browser to trigger a physical device within a certain (x) number of feet. The device was using arduino to trigger a DC switch for an AC power cord. 
