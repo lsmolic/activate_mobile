@@ -1,0 +1,65 @@
+#!/bin/bash
+
+PID=""
+
+function find_process()
+{
+  PID=`ps axo pid,command | grep 'fast_cron.sh' | grep -v 'grep' | awk '{print $1}'`   
+}
+
+function start()
+{
+find_process
+if [ -z $PID ]; then
+  echo "starting fast_cron"
+  /Users/lsmolic/Sites/activate_mobile/fast_cron.sh & 
+  exit 0
+else
+  echo "$PID"
+  echo "fast_cron is already running: exiting"
+fi
+}
+
+function stop()
+{
+  find_process
+  if [ -z $PID ]; then
+    echo "fast_cron is not running, run start"
+  else
+    echo "Stopping fast_cron"
+    kill -9 $PID    
+  fi
+}
+
+function restart()
+{
+  stop
+  start
+}
+
+function status()
+{
+  find_process
+  if [ -z $PID ]; then
+    echo "fast_cron is not running"
+  else
+    echo "fast_cron is running"
+  fi
+}
+
+case "$1" in 
+   start) 
+      start 
+   ;; 
+   stop) 
+      stop 
+   ;; 
+   restart) 
+      restart 
+   ;; 
+   status) 
+      status 
+   ;; 
+   *) 
+      echo "Usage: $0 {start|stop|restart|status}" 
+esac
